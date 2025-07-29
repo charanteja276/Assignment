@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Home from './pages/Home';
+import Wallet from './pages/Wallet';
+import Login from './pages/Login';
+import { GameProvider } from './context/GameContext';
 
-function App() {
+const App = () => {
+  const [playerId, setPlayerId] = useState(localStorage.getItem('playerId'));
+
+  useEffect(() => {
+    const storedId = localStorage.getItem('playerId');
+    if (storedId) {
+      setPlayerId(storedId);
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GameProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login onLogin={setPlayerId} />} />
+          <Route path="/" element={playerId ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/wallet" element={playerId ? <Wallet /> : <Navigate to="/login" />} />
+        </Routes>
+      </Router>
+    </GameProvider>
   );
-}
+};
 
 export default App;
