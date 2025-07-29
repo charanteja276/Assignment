@@ -13,7 +13,6 @@ const Home = () => {
       <GameBoard />
       <BetPanel playerId={playerId} />
       <CashoutButton playerId={playerId} />
-      <Wallet />
       <button
       className="btn btn-secondary my-2"
       onClick={() => {
